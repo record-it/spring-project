@@ -5,12 +5,15 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import pl.sda.module.AppConfiguration;
 import pl.sda.springproject.console.*;
 
 import java.util.List;
 import java.util.Scanner;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"pl.sda.module", "pl.sda.springproject"})
 public class SpringProjectApplication implements CommandLineRunner {
 
     private final InputData input;
@@ -19,7 +22,13 @@ public class SpringProjectApplication implements CommandLineRunner {
 
     private final Output output;
 
+    @Autowired
+    private AppConfiguration appConfiguration;
+
     private MessageConfiguration messages;
+
+    @Autowired
+    private Scanner scanner;
 
     public SpringProjectApplication(InputData input, @Qualifier("average") ProcessData process, Output output) {
         this.input = input;
@@ -37,7 +46,6 @@ public class SpringProjectApplication implements CommandLineRunner {
     }
 
     private void version1() {
-        Scanner scanner = new Scanner(System.in);
         int sum = 0;
         while(scanner.hasNextInt()){
             sum += scanner.nextInt();
@@ -56,5 +64,4 @@ public class SpringProjectApplication implements CommandLineRunner {
     public void setMessages(MessageConfiguration messageConfiguration){
         messages = messageConfiguration;
     }
-
 }
